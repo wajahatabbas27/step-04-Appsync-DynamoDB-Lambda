@@ -1,0 +1,154 @@
+{
+  "version": "16.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "Step04AppsyncLambdaDynamodbStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "Step04AppsyncLambdaDynamodbStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "Step04AppsyncLambdaDynamodbStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "Step04AppsyncLambdaDynamodbStack.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f0ba1013bd76c2bdfc7640a97664773f82b3e0164c5b287aeba65ef8d8eaa06f.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "Step04AppsyncLambdaDynamodbStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "Step04AppsyncLambdaDynamodbStack.assets"
+      ],
+      "metadata": {
+        "/Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GRAPHQLAPI0BDC9FAD"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/Schema": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GRAPHQLAPISchema03BCA39C"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/DefaultApiKey": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GRAPHQLAPIDefaultApiKey38D90378"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GRAPHQLAPIlambdafunctionServiceRole235209B4"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GRAPHQLAPIlambdafunctionServiceRoleDefaultPolicy470D0843"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GRAPHQLAPIlambdafunctionE5FF9B4D"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/QuerygetTodosResolver/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GRAPHQLAPIlambdafunctionQuerygetTodosResolverADF199F9"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/MutationaddTodoResolver/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GRAPHQLAPIlambdafunctionMutationaddTodoResolver24D95DBA"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/MutationdeleteTodoResolver/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GRAPHQLAPIlambdafunctionMutationdeleteTodoResolverDFB5C24D"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/MutationupdateTodoResolver/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GRAPHQLAPIlambdafunctionMutationupdateTodoResolverAA79A150"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/LambdaFunctionforTodos/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionforTodosServiceRoleEC356421"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/LambdaFunctionforTodos/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionforTodosServiceRoleDefaultPolicyBAA473A2"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/LambdaFunctionforTodos/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionforTodos0434D0DA"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/cdkTodosTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cdkTodosTable7805A6BB"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/Step04AppsyncLambdaDynamodbStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "Step04AppsyncLambdaDynamodbStack"
+    }
+  }
+}

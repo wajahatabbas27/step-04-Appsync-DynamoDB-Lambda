@@ -1,0 +1,596 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.0.74"
+        }
+      },
+      "Step04AppsyncLambdaDynamodbStack": {
+        "id": "Step04AppsyncLambdaDynamodbStack",
+        "path": "Step04AppsyncLambdaDynamodbStack",
+        "children": {
+          "GRAPHQL_API": {
+            "id": "GRAPHQL_API",
+            "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::GraphQLApi",
+                  "aws:cdk:cloudformation:props": {
+                    "authenticationType": "API_KEY",
+                    "name": "todo-app-api",
+                    "xrayEnabled": true
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_appsync.CfnGraphQLApi",
+                  "version": "2.14.0"
+                }
+              },
+              "Schema": {
+                "id": "Schema",
+                "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/Schema",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::GraphQLSchema",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "GRAPHQLAPI0BDC9FAD",
+                        "ApiId"
+                      ]
+                    },
+                    "definition": "type Todo {\n  id: ID!\n  title: String\n  done: Boolean!\n}\n\ninput TodoInput {\n  id: ID!\n  title: String!\n  done: Boolean!\n}\n\ntype Query {\n  getTodos: [Todo]\n}\n\ntype Mutation {\n  addTodo(todo: TodoInput!): Todo\n  updateTodo(todo: TodoInput!): Todo\n  deleteTodo(todoId: String!): String\n}\n"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_appsync.CfnGraphQLSchema",
+                  "version": "2.14.0"
+                }
+              },
+              "DefaultApiKey": {
+                "id": "DefaultApiKey",
+                "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/DefaultApiKey",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AppSync::ApiKey",
+                  "aws:cdk:cloudformation:props": {
+                    "apiId": {
+                      "Fn::GetAtt": [
+                        "GRAPHQLAPI0BDC9FAD",
+                        "ApiId"
+                      ]
+                    },
+                    "expires": 1677612603
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_appsync.CfnApiKey",
+                  "version": "2.14.0"
+                }
+              },
+              "lambda_function": {
+                "id": "lambda_function",
+                "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function",
+                "children": {
+                  "ServiceRole": {
+                    "id": "ServiceRole",
+                    "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/ServiceRole",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/ServiceRole/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "appsync.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                          "version": "2.14.0"
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/ServiceRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/ServiceRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": "lambda:InvokeFunction",
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::GetAtt": [
+                                          "LambdaFunctionforTodos0434D0DA",
+                                          "Arn"
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "GRAPHQLAPIlambdafunctionServiceRoleDefaultPolicy470D0843",
+                                "roles": [
+                                  {
+                                    "Ref": "GRAPHQLAPIlambdafunctionServiceRole235209B4"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.14.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.14.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Role",
+                      "version": "2.14.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::AppSync::DataSource",
+                      "aws:cdk:cloudformation:props": {
+                        "apiId": {
+                          "Fn::GetAtt": [
+                            "GRAPHQLAPI0BDC9FAD",
+                            "ApiId"
+                          ]
+                        },
+                        "name": "lambda_function",
+                        "type": "AWS_LAMBDA",
+                        "lambdaConfig": {
+                          "lambdaFunctionArn": {
+                            "Fn::GetAtt": [
+                              "LambdaFunctionforTodos0434D0DA",
+                              "Arn"
+                            ]
+                          }
+                        },
+                        "serviceRoleArn": {
+                          "Fn::GetAtt": [
+                            "GRAPHQLAPIlambdafunctionServiceRole235209B4",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_appsync.CfnDataSource",
+                      "version": "2.14.0"
+                    }
+                  },
+                  "QuerygetTodosResolver": {
+                    "id": "QuerygetTodosResolver",
+                    "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/QuerygetTodosResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/QuerygetTodosResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "GRAPHQLAPI0BDC9FAD",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "getTodos",
+                            "typeName": "Query",
+                            "dataSourceName": "lambda_function",
+                            "kind": "UNIT"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_appsync.CfnResolver",
+                          "version": "2.14.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync-alpha.Resolver",
+                      "version": "2.14.0-alpha.0"
+                    }
+                  },
+                  "MutationaddTodoResolver": {
+                    "id": "MutationaddTodoResolver",
+                    "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/MutationaddTodoResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/MutationaddTodoResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "GRAPHQLAPI0BDC9FAD",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "addTodo",
+                            "typeName": "Mutation",
+                            "dataSourceName": "lambda_function",
+                            "kind": "UNIT"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_appsync.CfnResolver",
+                          "version": "2.14.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync-alpha.Resolver",
+                      "version": "2.14.0-alpha.0"
+                    }
+                  },
+                  "MutationdeleteTodoResolver": {
+                    "id": "MutationdeleteTodoResolver",
+                    "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/MutationdeleteTodoResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/MutationdeleteTodoResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "GRAPHQLAPI0BDC9FAD",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "deleteTodo",
+                            "typeName": "Mutation",
+                            "dataSourceName": "lambda_function",
+                            "kind": "UNIT"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_appsync.CfnResolver",
+                          "version": "2.14.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync-alpha.Resolver",
+                      "version": "2.14.0-alpha.0"
+                    }
+                  },
+                  "MutationupdateTodoResolver": {
+                    "id": "MutationupdateTodoResolver",
+                    "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/MutationupdateTodoResolver",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Step04AppsyncLambdaDynamodbStack/GRAPHQL_API/lambda_function/MutationupdateTodoResolver/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::AppSync::Resolver",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Fn::GetAtt": [
+                                "GRAPHQLAPI0BDC9FAD",
+                                "ApiId"
+                              ]
+                            },
+                            "fieldName": "updateTodo",
+                            "typeName": "Mutation",
+                            "dataSourceName": "lambda_function",
+                            "kind": "UNIT"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_appsync.CfnResolver",
+                          "version": "2.14.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-appsync-alpha.Resolver",
+                      "version": "2.14.0-alpha.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-appsync-alpha.LambdaDataSource",
+                  "version": "2.14.0-alpha.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-appsync-alpha.GraphqlApi",
+              "version": "2.14.0-alpha.0"
+            }
+          },
+          "LambdaFunctionforTodos": {
+            "id": "LambdaFunctionforTodos",
+            "path": "Step04AppsyncLambdaDynamodbStack/LambdaFunctionforTodos",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "Step04AppsyncLambdaDynamodbStack/LambdaFunctionforTodos/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "Step04AppsyncLambdaDynamodbStack/LambdaFunctionforTodos/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.14.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "Step04AppsyncLambdaDynamodbStack/LambdaFunctionforTodos/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Step04AppsyncLambdaDynamodbStack/LambdaFunctionforTodos/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "dynamodb:*",
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "cdkTodosTable7805A6BB",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "LambdaFunctionforTodosServiceRoleDefaultPolicyBAA473A2",
+                            "roles": [
+                              {
+                                "Ref": "LambdaFunctionforTodosServiceRoleEC356421"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.14.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.14.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.14.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "Step04AppsyncLambdaDynamodbStack/LambdaFunctionforTodos/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "Step04AppsyncLambdaDynamodbStack/LambdaFunctionforTodos/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.14.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "Step04AppsyncLambdaDynamodbStack/LambdaFunctionforTodos/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.14.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.14.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "Step04AppsyncLambdaDynamodbStack/LambdaFunctionforTodos/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "c79fc866c6f5dda5dd671c0588e1a947c9ba00130cb7b318e235a36fafc239aa.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "LambdaFunctionforTodosServiceRoleEC356421",
+                        "Arn"
+                      ]
+                    },
+                    "environment": {
+                      "variables": {
+                        "TODOS_TABLE": {
+                          "Ref": "cdkTodosTable7805A6BB"
+                        }
+                      }
+                    },
+                    "functionName": "todo_App_lambda_function",
+                    "handler": "index.handler",
+                    "runtime": "nodejs12.x",
+                    "timeout": 10
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.14.0"
+            }
+          },
+          "cdkTodosTable": {
+            "id": "cdkTodosTable",
+            "path": "Step04AppsyncLambdaDynamodbStack/cdkTodosTable",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "Step04AppsyncLambdaDynamodbStack/cdkTodosTable/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "keySchema": [
+                      {
+                        "attributeName": "id",
+                        "keyType": "HASH"
+                      }
+                    ],
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "id",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "provisionedThroughput": {
+                      "readCapacityUnits": 5,
+                      "writeCapacityUnits": 5
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.14.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "Step04AppsyncLambdaDynamodbStack/cdkTodosTable/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.14.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "Step04AppsyncLambdaDynamodbStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "Step04AppsyncLambdaDynamodbStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.14.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "Step04AppsyncLambdaDynamodbStack/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.14.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.0.74"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.14.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.14.0"
+    }
+  }
+}
